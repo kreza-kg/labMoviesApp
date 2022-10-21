@@ -1,29 +1,10 @@
-import Header from "../components/headerMovieList";
-import FilterCard from "../components/filterMoviesCard";
-import MovieList from "../components/movieList";
-import Grid from "@mui/material/Grid";
 import React, { useState, useEffect } from "react";
+import PageTemplate from "../components/templateMovieListPage";
 
-
-const MovieListPage = (props) => {
+const HomePage = (props) => {
   const [movies, setMovies] = useState([]);
-  const [nameFilter, setNameFilter] = useState("");
-  const [genreFilter, setGenreFilter] = useState("0");
-
-  const genreId = Number(genreFilter);
-
-  let displayedMovies = movies
-    .filter((m) => {
-      return m.title.toLowerCase().search(nameFilter.toLowerCase()) !== -1;
-    })
-    .filter((m) => {
-      return genreId > 0 ? m.genre_ids.includes(genreId) : true;
-    });
-
-  const handleChange = (type, value) => {
-    if (type === "name") setNameFilter(value);
-    else setGenreFilter(value);
-  };
+  const favourites = movies.filter((m) => m.favourite);
+  localStorage.setItem("favourites", JSON.stringify(favourites));
 
   const addToFavourites = (movieId) => {
     const updatedMovies = movies.map((m) =>
@@ -38,31 +19,20 @@ const MovieListPage = (props) => {
     )
       .then((res) => res.json())
       .then((json) => {
-        // console.log(json);
         return json.results;
       })
-      .then(movies => {
+      .then((movies) => {
         setMovies(movies);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Grid container sx={{ padding: "20px" }}>
-      <Grid item xs={12}>
-        <Header title={"Home Page"} />
-      </Grid>
-      <Grid item container spacing={5}>
-        <Grid key="find" item xs={12} sm={6} md={4} lg={3} xl={2}>
-        <FilterCard
-          onUserInput={handleChange}
-          titleFilter={nameFilter}
-          genreFilter={genreFilter}
-        />
-        </Grid>
-          <MovieList movies={displayedMovies} selectFavourite={addToFavourites} />
-      </Grid>
-    </Grid>
+    <PageTemplate
+      title="Discover Movies"
+      movies={movies}
+      selectFavourite={addToFavourites}
+    />
   );
 };
-export default MovieListPage;
+export default HomePage;
