@@ -13,10 +13,13 @@ const MovieHeader = (props) => {
   const movie = props.movie;
   const navigate = useNavigate();
   const FavouriteMovies = JSON.parse(localStorage.getItem("favourites")); 
-
+  var movieI = document.location.href;
+  var idmovie = movieI.substring(movieI.lastIndexOf( "/" )+1 );
+  
+  console.log(idmovie);
   let EqualId = false;
   FavouriteMovies.forEach((movie) => {
-      if  (movie.id === FavouriteMovies )
+      if  (movie.id === idmovie /*recuperer l'id du film actuel*/ )
       console.log(movie.id)
       EqualId = true
   } );
