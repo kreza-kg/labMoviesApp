@@ -1,13 +1,13 @@
 import React from "react";
-import { getMovies } from "../api/tmdb-api";
+import { getSeries } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
 import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
 
-const BestMovie = (props) => {
+const Serie = (props) => {
 
-  const {  data, error, isLoading, isError }  = useQuery( getMovies)
+  const {  data, error, isLoading, isError }  = useQuery( getSeries)
 
   if (isLoading) {
     return <Spinner />
@@ -18,13 +18,8 @@ const BestMovie = (props) => {
   }  
 
   const movies = data.results;
- 
- //put the best rated movies first
- for(let i = 0; movies.lenght; i++){
-  movies.sort(data[i], data[i-1]);
-}
 
-  
+
 
   // Redundant, but necessary to avoid app crashing.
   const favourites = movies.filter(m => m.favourite)
@@ -41,4 +36,4 @@ const BestMovie = (props) => {
     />
   );
 };
-export default BestMovie;
+export default Serie;
